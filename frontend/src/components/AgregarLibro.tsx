@@ -44,6 +44,10 @@ const AgregarLibro = () => {
     }
   };
 
+  //editarLibro/actualizarLibro
+  //eliminarLibro
+  //verLibro
+
   // Aquí podrías tener tus funciones para manejar el envío de formularios, etc.
 
   return (
