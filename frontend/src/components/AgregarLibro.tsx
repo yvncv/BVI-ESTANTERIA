@@ -1,164 +1,147 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
-
-interface Libro {
-  autor: string;
-  titulo: string;
-  editorial: string;
-  categoria: string;
-  enlace: string;
-}
+import { useParams } from 'react-router-dom';
+import { Libro } from '../types/Libro';
 
 const AgregarLibro = () => {
-  const valorInicial: Libro = {
-    autor: "",
-    titulo: "",
-    editorial: "",
-    categoria: "",
-    enlace: "",
-  };
-
-  let { id } = useParams<{ id: string }>();
-
-  const [libro, setLibro] = useState<Libro>(valorInicial);
-  const [idLibro, setIdLibro] = useState<string | undefined>(id);
-
-  const capturarDatos = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLibro({ ...libro, [name]: value });
-  };
-
-  const guardarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(libro);
-
-    const postLibro = {
-      autor: libro.autor,
-      titulo: libro.titulo,
-      editorial: libro.editorial,
-      categoria: libro.categoria,
-      enlace: libro.enlace
-    };
-
-    if (idLibro) {
-      await axios.put(`http://localhost:4000/api/libros/${idLibro}`, postLibro);
-    } else {
-      await axios.post('http://localhost:4000/api/libros', postLibro);
-    }
-
-    setLibro({ ...valorInicial });
-    setIdLibro("");
-  };
-
-  const obtenerId = async (valorId: string) => {
-    const res = await axios.get(`http://localhost:4000/api/libros/${valorId}`);
-    setLibro({
-      autor: res.data.autor,
-      titulo: res.data.titulo,
-      editorial: res.data.editorial,
-      categoria: res.data.categoria,
-      enlace: res.data.enlace
-    });
-  };
+  const { id } = useParams<{ id: string }>();
+  const [libro, setLibro] = useState<Libro>({
+    _id: '',
+    carrera: '',
+    ciclo: '',
+    curso: '',
+    autor: '',
+    titulo: '',
+    lugar: '',
+    tipo: '',
+    categoria: '',
+    enlace: ''
+  });
 
   useEffect(() => {
-    if (idLibro) {
-      obtenerId(idLibro);
+    if (id) {
+      obtenerId(id);
     }
-  }, [idLibro]);
+  }, [id]);
+
+  const obtenerId = async (valorId: string) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/api/libros/${valorId}`);
+      setLibro({
+        _id: valorId,
+        carrera: res.data.carrera,
+        ciclo: res.data.ciclo,
+        curso: res.data.curso,
+        autor: res.data.autor,
+        titulo: res.data.titulo,
+        lugar: res.data.lugar,
+        tipo: res.data.tipo,
+        categoria: res.data.categoria,
+        enlace: res.data.enlace
+      });
+    } catch (error) {
+      console.error('Error al obtener el libro:', error);
+    }
+  };
+
+  // Aquí podrías tener tus funciones para manejar el envío de formularios, etc.
 
   return (
-    <div className="col-md-6 offset-md-3">
-      <div className="card card-body">
-        <form onSubmit={guardarDatos}>
-          <div className="form-group">
-            <label htmlFor="inputAutor">Autor</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputAutor"
-              placeholder="Ingrese autor"
-              required
-              value={libro.autor}
-              name="autor"
-              onChange={capturarDatos}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputTitulo">Titulo</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputTitulo"
-              placeholder="Ingrese titulo"
-              required
-              value={libro.titulo}
-              name="titulo"
-              onChange={capturarDatos}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputEditorial">Editorial</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputEditorial"
-              placeholder="Ingrese editorial"
-              required
-              value={libro.editorial}
-              name="editorial"
-              onChange={capturarDatos}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputCategoria">Categoría</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputCategoria"
-              placeholder="Ingrese categoría"
-              required
-              value={libro.categoria}
-              name="categoria"
-              onChange={capturarDatos}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputEnlace">Enlace</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputEnlace"
-              placeholder="Ingrese enlace"
-              required
-              value={libro.enlace}
-              name="enlace"
-              onChange={capturarDatos}
-            />
-            <small id="emailHelp" className="form-text text-muted">
-              Verificar que la fuente y los datos ingresados sean auténticos.
-            </small>
-          </div>
-          <div className="form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="exampleCheck1"
-            />
-            <label className="form-check-label" htmlFor="exampleCheck1">
-              Recuérdame
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary form-control"
-            name="enviar"
-          >
-            {idLibro ? "Actualizar Libro" : "Enviar"}
-          </button>
-        </form>
-      </div>
+    <div>
+      <h2>{id ? 'Editar Libro' : 'Agregar Libro'}</h2>
+      <form>
+        <div>
+          <label htmlFor="carrera">Carrera:</label>
+          <input
+            type="text"
+            id="carrera"
+            name="carrera"
+            value={libro.carrera}
+            onChange={(e) => setLibro({ ...libro, carrera: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="ciclo">Ciclo:</label>
+          <input
+            type="text"
+            id="ciclo"
+            name="ciclo"
+            value={libro.ciclo}
+            onChange={(e) => setLibro({ ...libro, ciclo: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="curso">Curso:</label>
+          <input
+            type="text"
+            id="curso"
+            name="curso"
+            value={libro.curso}
+            onChange={(e) => setLibro({ ...libro, curso: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="titulo">Título:</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value={libro.titulo}
+            onChange={(e) => setLibro({ ...libro, titulo: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="autor">Autor:</label>
+          <input
+            type="text"
+            id="autor"
+            name="autor"
+            value={libro.autor}
+            onChange={(e) => setLibro({ ...libro, autor: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="lugar">Lugar:</label>
+          <input
+            type="text"
+            id="lugar"
+            name="lugar"
+            value={libro.lugar}
+            onChange={(e) => setLibro({ ...libro, lugar: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="tipo">Tipo:</label>
+          <input
+            type="text"
+            id="tipo"
+            name="tipo"
+            value={libro.tipo}
+            onChange={(e) => setLibro({ ...libro, tipo: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="categoria">Categoría:</label>
+          <input
+            type="text"
+            id="categoria"
+            name="categoria"
+            value={libro.categoria}
+            onChange={(e) => setLibro({ ...libro, categoria: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="enlace">Enlace:</label>
+          <input
+            type="text"
+            id="enlace"
+            name="enlace"
+            value={libro.enlace}
+            onChange={(e) => setLibro({ ...libro, enlace: e.target.value })}
+          />
+        </div>
+        <button type="submit">{id ? 'Actualizar' : 'Guardar'}</button>
+      </form>
     </div>
   );
 };
