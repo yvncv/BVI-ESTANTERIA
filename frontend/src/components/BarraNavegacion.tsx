@@ -9,9 +9,9 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 function BarraNavegacion() {
   return (
     <>
-        <Navbar expand={'md'} className="bg-body-tertiary mb-3">
+        <Navbar expand={'md'} className="bg-success mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">Estantería Virtual - Biblioteca Virtual de Ingeniería</Navbar.Brand>
+            <Navbar.Brand  className="text-white" href="#">Estantería Virtual - Biblioteca Virtual de Ingeniería</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-md`}
@@ -25,10 +25,10 @@ function BarraNavegacion() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/" >Home</Nav.Link>
-                  <Nav.Link href="/AgregarLibro" >Agregar Libro</Nav.Link>
+                  <Nav.Link href="/" className="text-white">Home</Nav.Link>
+                  <Nav.Link href="/AgregarLibro" className="text-white">Agregar Libro</Nav.Link>
                   <NavDropdown
-                    title="Dropdown"
+                    title={<span className="text-white">Filtrar</span>}
                     id={`offcanvasNavbarDropdown-expand-md`}
                   >
                     <NavDropdown.Item href="#">Carreras</NavDropdown.Item>
@@ -45,7 +45,7 @@ function BarraNavegacion() {
                     className="me-2"
                     aria-label="Search"
                   />
-                  <Button variant="outline-success">Search</Button>
+                  <Button variant="outline-success">Buscar</Button>
                 </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

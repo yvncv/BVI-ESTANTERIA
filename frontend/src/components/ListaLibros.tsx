@@ -53,7 +53,7 @@ const ListaLibros = () => {
   return (
     <div className="row">
       {librosRegistrados.map((libro) => (
-        <div className="col-md-4 p-2" key={libro._id}>
+        <div className="col-md-4 p-3" key={libro._id}>
           <Card style={{ width: '20rem' }}>
               <p className="card-header">{libro.carrera}, ciclo {libro.ciclo}, {libro.curso}</p>
               <Card.Img variant="top" src="https://www.urp.edu.pe/img/thumbnails/wm/451/hm/162/we/451/he/162/x/0/y/0/s/0/q/90/zc/3/f/0/rgb/000000/src/37375/n/logo-urp.png" /> 
