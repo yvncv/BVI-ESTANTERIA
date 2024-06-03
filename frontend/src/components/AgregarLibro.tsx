@@ -2,10 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Libro } from '../types/Libro';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import { Container } from 'react-bootstrap';
 
 const CrearLibro: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [validated, setValidated] = useState(false);
+
   const [libro, setLibro] = useState<Libro>({
     _id: '',
     carrera: '',
@@ -54,120 +61,196 @@ const CrearLibro: React.FC = () => {
     setLibro({ ...libro, [name]: value });
   };
 
-  const guardarDatos = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (id) {
-        await axios.put(`http://localhost:4000/api/libros/${id}`, libro);
-        alert('Libro actualizado correctamente');
-      } else {
-        await axios.post('http://localhost:4000/api/libros', libro);
-        alert('Libro creado correctamente');
+
+  const handleSubmit = async (event: any) => {
+    const form = event.currentTarget;
+    setValidated(true);
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    else {
+      try {
+        if (id) {
+          await axios.put(`http://localhost:4000/api/libros/${id}`, libro);
+          alert('Libro actualizado correctamente');
+        } else {
+          await axios.post('http://localhost:4000/api/libros', libro);
+          alert('Libro creado correctamente');
+        }
+        navigate('/');
+      } catch (error) {
+        console.error('Error al guardar el libro:', error);
+        alert('Error al guardar el libro');
       }
-      navigate('/');
-    } catch (error) {
-      console.error('Error al guardar el libro:', error);
-      alert('Error al guardar el libro');
     }
   };
 
+
   return (
-    <div>
+    <Container>
       <h2>{id ? 'Editar Libro' : 'Agregar Libro'}</h2>
-      <form onSubmit={guardarDatos}>
-        <div>
-          <label htmlFor="carrera">Carrera:</label>
-          <input
-            type="text"
-            id="carrera"
-            name="carrera"
-            value={libro.carrera}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="ciclo">Ciclo:</label>
-          <input
-            type="text"
-            id="ciclo"
-            name="ciclo"
-            value={libro.ciclo}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="curso">Curso:</label>
-          <input
-            type="text"
-            id="curso"
-            name="curso"
-            value={libro.curso}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="titulo">Título:</label>
-          <input
-            type="text"
-            id="titulo"
-            name="titulo"
-            value={libro.titulo}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="autor">Autor:</label>
-          <input
-            type="text"
-            id="autor"
-            name="autor"
-            value={libro.autor}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="lugar">Lugar:</label>
-          <input
-            type="text"
-            id="lugar"
-            name="lugar"
-            value={libro.lugar}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="tipo">Tipo:</label>
-          <input
-            type="text"
-            id="tipo"
-            name="tipo"
-            value={libro.tipo}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="categoria">Categoría:</label>
-          <input
-            type="text"
-            id="categoria"
-            name="categoria"
-            value={libro.categoria}
-            onChange={capturarDatos}
-          />
-        </div>
-        <div>
-          <label htmlFor="enlace">Enlace:</label>
-          <input
-            type="text"
-            id="enlace"
-            name="enlace"
-            value={libro.enlace}
-            onChange={capturarDatos}
-          />
-        </div>
-        <button type="submit">{id ? 'Actualizar' : 'Guardar'}</button>
-      </form>
-    </div>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className="mb-3">
+          <Form.Group as={Col} md="6" controlId="formCarrera">
+            <Form.Label>Carrera</Form.Label>
+            <Form.Control
+              as="select"
+              name="carrera"
+              onChange={capturarDatos}
+              value={libro.carrera}
+              required
+            >
+              <option value="">Seleccionar Carrera</option>
+              <option value="INFORMÁTICA">INFORMÁTICA</option>
+              <option value="CIVIL">CIVIL</option>
+              <option value="INDUSTRIAL">INDUSTRIAL</option>
+              <option value="ELECTRÓNICA">ELECTRÓNICA</option>
+              <option value="MECATRÓNICA">MECATRÓNICA</option>
+            </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Por favor, seleccione una carrera.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} md="6" controlId="formCiclo">
+            <Form.Label>Semestre</Form.Label>
+            <Form.Control
+              as="select"
+              name="ciclo"
+              onChange={capturarDatos}
+              value={libro.ciclo}
+              required
+            >
+              <option value="">Seleccionar Semestre</option>
+              {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Por favor, seleccione un semestre.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} md="6" controlId="formCurso">
+            <Form.Label>Curso</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Curso"
+              name="curso"
+              onChange={capturarDatos}
+              value={libro.curso}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el nombre del curso.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} md="6" controlId="formTitulo">
+            <Form.Label>Título</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Título"
+              name="titulo"
+              onChange={capturarDatos}
+              value={libro.titulo}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el título del libro.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} md="6" controlId="formAutor">
+            <Form.Label>Autor y Año</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Autor. (año)"
+              name="autor"
+              onChange={capturarDatos}
+              value={libro.autor}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el autor y año de publicación.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} md="6" controlId="formLugar">
+            <Form.Label>Lugar</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Editorial, País"
+              name="lugar"
+              onChange={capturarDatos}
+              value={libro.lugar}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el lugar de publicación.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} md="6" controlId="formTipo">
+            <Form.Label>Tipo</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Documento PDF, página web..."
+              name="tipo"
+              onChange={capturarDatos}
+              value={libro.tipo}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el tipo de documento.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} md="6" controlId="formCategoria">
+            <Form.Label>Categoría</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Libro, Monografía, Artículo..."
+              name="categoria"
+              onChange={capturarDatos}
+              value={libro.categoria}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese la categoría del documento.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="formEnlace">
+            <Form.Label>Enlace</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enlace de acceso al libro"
+              name="enlace"
+              onChange={capturarDatos}
+              value={libro.enlace}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese el enlace de acceso al libro.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Row>
+
+        <Button type="submit">{id ? 'Actualizar' : 'Guardar'}</Button>
+      </Form>
+    </Container>
   );
 };
 

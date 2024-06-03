@@ -57,17 +57,18 @@ const ListaLibros = () => {
           <Card style={{ width: '20rem' }}>
               <p className="card-header">{libro.carrera}, ciclo {libro.ciclo}, {libro.curso}</p>
               <Card.Img variant="top" src="https://www.urp.edu.pe/img/thumbnails/wm/451/hm/162/we/451/he/162/x/0/y/0/s/0/q/90/zc/3/f/0/rgb/000000/src/37375/n/logo-urp.png" /> 
+              {/* <Card.Img variant="top" src="{libro.portada}" />  */}
               <Card.Body>
               <Card.Title>{libro.titulo}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">Autor: {libro.autor}</Card.Subtitle>
                 <Card.Text>Editorial: {libro.lugar}</Card.Text>
                 <Card.Text>Clase: {libro.categoria}</Card.Text>
                 <Card.Link href={libro.enlace}>Lea el libro dando click aquí.</Card.Link>
-              <Card.Footer>
+              <Card.Footer className="d-flex justify-content-around">
                 <Button className="btn btn-danger" onClick={() => handleMostrarModal(libro._id)}>
                   Eliminar libro
                 </Button>
-                <Link className="btn btn-success m-1" to={`/edit/${libro._id}`}>
+                <Link className="btn btn-success" to={`/edit/${libro._id}`}>
                   Editar
                 </Link> 
               </Card.Footer>
