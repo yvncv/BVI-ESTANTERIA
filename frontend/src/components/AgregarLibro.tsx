@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Libro } from '../types/Libro';
 
-const AgregarLibro = () => {
+const CrearLibro: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [libro, setLibro] = useState<Libro>({
     _id: '',
     carrera: '',
@@ -20,15 +21,26 @@ const AgregarLibro = () => {
 
   useEffect(() => {
     if (id) {
-      obtenerId(id);
+      obtenerLibro(id);
     }
   }, [id]);
 
-  const obtenerId = async (valorId: string) => {
+  const obtenerLibro = async (valorId: string) => {
     try {
       const res = await axios.get(`http://localhost:4000/api/libros/${valorId}`);
       if (res.data) {
-        setLibro(res.data);
+        setLibro({
+          _id: valorId,
+          carrera: res.data.carrera || '',
+          ciclo: res.data.ciclo || '',
+          curso: res.data.curso || '',
+          autor: res.data.autor || '',
+          titulo: res.data.titulo || '',
+          lugar: res.data.lugar || '',
+          tipo: res.data.tipo || '',
+          categoria: res.data.categoria || '',
+          enlace: res.data.enlace || ''
+        });
       } else {
         console.error('No se encontraron datos para el libro con id:', valorId);
       }
@@ -37,10 +49,32 @@ const AgregarLibro = () => {
     }
   };
 
+  const capturarDatos = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLibro({ ...libro, [name]: value });
+  };
+
+  const guardarDatos = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (id) {
+        await axios.put(`http://localhost:4000/api/libros/${id}`, libro);
+        alert('Libro actualizado correctamente');
+      } else {
+        await axios.post('http://localhost:4000/api/libros', libro);
+        alert('Libro creado correctamente');
+      }
+      navigate('/');
+    } catch (error) {
+      console.error('Error al guardar el libro:', error);
+      alert('Error al guardar el libro');
+    }
+  };
+
   return (
     <div>
       <h2>{id ? 'Editar Libro' : 'Agregar Libro'}</h2>
-      <form>
+      <form onSubmit={guardarDatos}>
         <div>
           <label htmlFor="carrera">Carrera:</label>
           <input
@@ -48,7 +82,7 @@ const AgregarLibro = () => {
             id="carrera"
             name="carrera"
             value={libro.carrera}
-            onChange={(e) => setLibro({ ...libro, carrera: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -58,7 +92,7 @@ const AgregarLibro = () => {
             id="ciclo"
             name="ciclo"
             value={libro.ciclo}
-            onChange={(e) => setLibro({ ...libro, ciclo: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -68,7 +102,7 @@ const AgregarLibro = () => {
             id="curso"
             name="curso"
             value={libro.curso}
-            onChange={(e) => setLibro({ ...libro, curso: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -78,7 +112,7 @@ const AgregarLibro = () => {
             id="titulo"
             name="titulo"
             value={libro.titulo}
-            onChange={(e) => setLibro({ ...libro, titulo: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -88,7 +122,7 @@ const AgregarLibro = () => {
             id="autor"
             name="autor"
             value={libro.autor}
-            onChange={(e) => setLibro({ ...libro, autor: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -98,7 +132,7 @@ const AgregarLibro = () => {
             id="lugar"
             name="lugar"
             value={libro.lugar}
-            onChange={(e) => setLibro({ ...libro, lugar: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -108,7 +142,7 @@ const AgregarLibro = () => {
             id="tipo"
             name="tipo"
             value={libro.tipo}
-            onChange={(e) => setLibro({ ...libro, tipo: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -118,7 +152,7 @@ const AgregarLibro = () => {
             id="categoria"
             name="categoria"
             value={libro.categoria}
-            onChange={(e) => setLibro({ ...libro, categoria: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <div>
@@ -128,7 +162,7 @@ const AgregarLibro = () => {
             id="enlace"
             name="enlace"
             value={libro.enlace}
-            onChange={(e) => setLibro({ ...libro, enlace: e.target.value })}
+            onChange={capturarDatos}
           />
         </div>
         <button type="submit">{id ? 'Actualizar' : 'Guardar'}</button>
@@ -137,4 +171,4 @@ const AgregarLibro = () => {
   );
 };
 
-export default AgregarLibro;
+export default CrearLibro;

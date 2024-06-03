@@ -59,7 +59,7 @@ libroCtrl.deleteLibro = async (req, res) => {
 libroCtrl.updateLibro = async (req, res) => {
     const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace } = req.body;
     try {
-        const id = mongoose.Types.ObjectId(req.params.id); 
+        const id = (req.params.id); 
         await Libro.findByIdAndUpdate(id, {
             carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace
         });
