@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 import { Libro } from "../types/Libro";
 import Card from "react-bootstrap/esm/Card";
 import { Button } from "react-bootstrap";
+import ModalEliminar from "./ModalEliminarLibro";
 
 const ListaLibros = () => {
   const [lista, setLista] = useState<Libro[]>([]);
+  const [mostrarModal, setMostrarModal] = useState<boolean>(false);
+  const [idEliminarLibro, setIdEliminarLibro] = useState<string | null>(null);
 
   useEffect(() => {
     const obtenerLibros = async () => {
@@ -21,8 +24,28 @@ const ListaLibros = () => {
     obtenerLibros();
   }, []);
 
-  const eliminarLibro = async (id: string) => {
-    await axios.delete(`http://localhost:4000/api/libros/${id}`);
+  const handleMostrarModal = (id: string) => {
+    setIdEliminarLibro(id);
+    setMostrarModal(true);
+  };
+
+  const handleCerrarModal = () => {
+    setMostrarModal(false);
+    setIdEliminarLibro(null);
+  };
+
+  const eliminarLibro = async () => {
+    if (idEliminarLibro) {
+      try {
+        await axios.delete(`http://localhost:4000/api/libros/${idEliminarLibro}`);
+        // Actualizar la lista de libros en el estado
+        setLista(prevLista => prevLista.filter(libro => libro._id !== idEliminarLibro));
+      } catch (error) {
+        console.error("Error al eliminar el libro:", error);
+      } finally {
+        handleCerrarModal();
+      }
+    }
   };
 
   const librosRegistrados = lista.filter(libro => libro.enlace != null);
@@ -41,7 +64,7 @@ const ListaLibros = () => {
                 <Card.Text>Clase: {libro.categoria}</Card.Text>
                 <Card.Link href={libro.enlace}>Lea el libro dando click aquí.</Card.Link>
               <Card.Footer>
-                <Button className="btn btn-danger" onClick={() => eliminarLibro(libro._id)}>
+                <Button className="btn btn-danger" onClick={() => handleMostrarModal(libro._id)}>
                   Eliminar libro
                 </Button>
                 <Link className="btn btn-success m-1" to={`/edit/${libro._id}`}>
@@ -52,6 +75,11 @@ const ListaLibros = () => {
           </Card>
         </div>
       ))}
+      <ModalEliminar 
+        show={mostrarModal} 
+        handleClose={handleCerrarModal} 
+        handleConfirm={eliminarLibro} 
+      />
     </div>
   );
 };

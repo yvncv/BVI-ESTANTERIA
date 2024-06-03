@@ -1,19 +1,17 @@
 const {Schema, model} = require('mongoose')
 
 const libroSchema = new Schema({
-    _id: String,
-    carrera: String,
-    ciclo: String,
-    curso: String,
-    autor: String,
-    titulo: String,
-    lugar: String,
-    tipo: String,
-    categoria: String,
-    enlace: String,
-},
-{
-    timestamps: true 
-})
+    carrera: { type: String, required: true },
+    ciclo: { type: Number, required: true },
+    curso: { type: String, required: true },
+    autor: { type: String, required: true },
+    titulo: { type: String, required: true },
+    lugar: { type: String, required: true },
+    tipo: { type: String, required: true },
+    categoria: { type: String, required: true },
+    enlace: { type: String, required: true },
+}, {
+    versionKey: false
+});
 
 module.exports = model('Libro', libroSchema)

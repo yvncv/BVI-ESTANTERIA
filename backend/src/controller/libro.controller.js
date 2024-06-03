@@ -1,41 +1,72 @@
 const libroCtrl = {}
 
 const Libro = require('../models/Libro');
+const mongoose = require('mongoose');
 
 libroCtrl.getLibro = async (req, res) => {
-    const libros = await Libro.find();
-    res.json(libros);
+    try {
+        const libros = await Libro.find();
+        res.json(libros);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los libros', error });
+    }
 };
 
-libroCtrl.createLibro = async(req, res) => {
-    const {autor, titulo, editorial, categoria, enlace } = req.body;
+libroCtrl.createLibro = async (req, res) => {
+    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace } = req.body;
     const newLibro = new Libro({
-        autor: autor,
-        titulo: titulo,
-        editorial: editorial,
-        categoria: categoria,
-        enlace: enlace,
-    })
-    await newLibro.save();
-    res.json({message: "El libro ha sido creado"})
-}
+        carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace
+    });
+    try {
+        await newLibro.save();
+        res.json({ message: "El libro ha sido creado" });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al crear el libro', error });
+    }
+};
 
-libroCtrl.getLib = async(req, res) => {
-    const libro = await Libro.findById(req.params.id)
-    res.json(libro)
-}
+libroCtrl.getLib = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-libroCtrl.deleteLibro = async(req, res) => {
-    await Libro.findByIdAndDelete(req.params.id)
-    res.json({message: "El libro ha sido eliminado"})
-}
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID inválido' });
+        }
 
-libroCtrl.updateLibro = async(req, res) => {
-    const {autor, titulo, editorial, categoria, enlace} = req.body;
-    await Libro.findByIdAndUpdate(req.params.id, {
-        autor, titulo, editorial, categoria, enlace 
-    })
-    res.json({message: "El libro ha sido actualizado"})
+        const libro = await Libro.findById(id);
+
+        if (!libro) {
+            return res.status(404).json({ message: 'Libro no encontrado' });
+        }
+
+        res.json(libro);
+    } catch (error) {
+        console.error('Error al obtener el libro:', error); 
+        res.status(500).json({ message: 'Error al obtener el libro', error: error.message });
+    }
+};
+
+libroCtrl.deleteLibro = async (req, res) => {
+    try {
+        const id = (req.params.id); 
+        await Libro.findByIdAndDelete(id);
+        res.json({ message: "El libro ha sido eliminado" });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar el libro', error });
+    }
+};
+
+libroCtrl.updateLibro = async (req, res) => {
+    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace } = req.body;
+    try {
+        const id = mongoose.Types.ObjectId(req.params.id); 
+        await Libro.findByIdAndUpdate(id, {
+            carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace
+        });
+        res.json({ message: "El libro ha sido actualizado" });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar el libro', error });
+    }
 }
 
 module.exports = libroCtrl;

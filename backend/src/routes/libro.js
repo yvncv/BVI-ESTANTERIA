@@ -1,15 +1,14 @@
 const {Router} = require('express')
 const router = Router()
-
-const {createLibro, getLibro, getLib, deleteLibro, updateLibro} = require('../controller/libro.controller.js')
+const libroCtrl = require('../controller/libro.controller.js');
 
 router.route('/')
-    .get(getLibro)
-    .post(createLibro)
+    .get(libroCtrl.getLibro)
+    .post(libroCtrl.createLibro)
 
 router.route('/:id')
-    .get(getLib)
-    .delete(deleteLibro)
-    .put(updateLibro)
+    .get(libroCtrl.getLib)
+    .delete(libroCtrl.deleteLibro)
+    .put(libroCtrl.updateLibro)
 
 module.exports = router;

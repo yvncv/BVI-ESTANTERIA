@@ -27,28 +27,15 @@ const AgregarLibro = () => {
   const obtenerId = async (valorId: string) => {
     try {
       const res = await axios.get(`http://localhost:4000/api/libros/${valorId}`);
-      setLibro({
-        _id: valorId,
-        carrera: res.data.carrera,
-        ciclo: res.data.ciclo,
-        curso: res.data.curso,
-        autor: res.data.autor,
-        titulo: res.data.titulo,
-        lugar: res.data.lugar,
-        tipo: res.data.tipo,
-        categoria: res.data.categoria,
-        enlace: res.data.enlace
-      });
+      if (res.data) {
+        setLibro(res.data);
+      } else {
+        console.error('No se encontraron datos para el libro con id:', valorId);
+      }
     } catch (error) {
       console.error('Error al obtener el libro:', error);
     }
   };
-
-  //editarLibro/actualizarLibro
-  //eliminarLibro
-  //verLibro
-
-  // Aquí podrías tener tus funciones para manejar el envío de formularios, etc.
 
   return (
     <div>

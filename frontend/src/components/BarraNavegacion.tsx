@@ -11,7 +11,7 @@ function BarraNavegacion() {
     <>
         <Navbar expand={'md'} className="bg-body-tertiary mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">Estantería Virtual - Biblioteca Virtualde Ingeniería</Navbar.Brand>
+            <Navbar.Brand href="#">Estantería Virtual - Biblioteca Virtual de Ingeniería</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-md`}
@@ -26,6 +26,7 @@ function BarraNavegacion() {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/" >Home</Nav.Link>
+                  <Nav.Link href="/AgregarLibro" >Agregar Libro</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-md`}
