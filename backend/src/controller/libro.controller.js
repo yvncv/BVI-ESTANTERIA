@@ -13,9 +13,9 @@ libroCtrl.getLibro = async (req, res) => {
 };
 
 libroCtrl.createLibro = async (req, res) => {
-    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace } = req.body;
+    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada } = req.body;
     const newLibro = new Libro({
-        carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace
+        carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada
     });
     try {
         await newLibro.save();
@@ -57,11 +57,11 @@ libroCtrl.deleteLibro = async (req, res) => {
 };
 
 libroCtrl.updateLibro = async (req, res) => {
-    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace } = req.body;
+    const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada } = req.body;
     try {
         const id = (req.params.id); 
         await Libro.findByIdAndUpdate(id, {
-            carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace
+            carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada
         });
         res.json({ message: "El libro ha sido actualizado" });
     } catch (error) {

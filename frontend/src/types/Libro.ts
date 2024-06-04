@@ -9,4 +9,5 @@ export interface Libro {
     tipo: string;
     categoria: string;
     enlace: string;
+    portada: string;
 }                                                     

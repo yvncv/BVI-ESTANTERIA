@@ -9,27 +9,27 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 function BarraNavegacion() {
   return (
     <>
-        <Navbar expand={'md'} className="bg-success mb-3">
+        <Navbar expand={'lg'} className="bg-success mb-3">
           <Container fluid>
             <Navbar.Brand  className="text-white" href="#">Estantería Virtual - Biblioteca Virtual de Ingeniería</Navbar.Brand>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
             <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-md`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-md`}
+              id={`offcanvasNavbar-expand-lg`}
+              aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
               placement="end"
             >
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
                   Offcanvas
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/" className="text-white">Home</Nav.Link>
-                  <Nav.Link href="/AgregarLibro" className="text-white">Agregar Libro</Nav.Link>
+                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href="/AgregarLibro">Agregar Libro</Nav.Link>
                   <NavDropdown
-                    title={<span className="text-white">Filtrar</span>}
-                    id={`offcanvasNavbarDropdown-expand-md`}
+                    title={<span>Filtrar</span>}
+                    id={`offcanvasNavbarDropdown-expand-lg`}
                   >
                     <NavDropdown.Item href="#">Carreras</NavDropdown.Item>
                     <NavDropdown.Item href="#">Semestres</NavDropdown.Item>

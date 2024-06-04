@@ -23,7 +23,8 @@ const CrearLibro: React.FC = () => {
     lugar: '',
     tipo: '',
     categoria: '',
-    enlace: ''
+    enlace: '',
+    portada: '',
   });
 
   useEffect(() => {
@@ -46,7 +47,8 @@ const CrearLibro: React.FC = () => {
           lugar: res.data.lugar || '',
           tipo: res.data.tipo || '',
           categoria: res.data.categoria || '',
-          enlace: res.data.enlace || ''
+          enlace: res.data.enlace || '',
+          portada: res.data.portada || '',
         });
       } else {
         console.error('No se encontraron datos para el libro con id:', valorId);
@@ -244,6 +246,19 @@ const CrearLibro: React.FC = () => {
             />
             <Form.Control.Feedback type="invalid">
               Por favor, ingrese el enlace de acceso al libro.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group as={Col} controlId="formPortada">
+            <Form.Label>Portada</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Portada del libro"
+              name="portada"
+              onChange={capturarDatos}
+              value={libro.portada}
+            />
+            <Form.Control.Feedback type="invalid">
+              Ingrese portada del libro.
             </Form.Control.Feedback>
           </Form.Group>
         </Row>

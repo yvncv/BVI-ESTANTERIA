@@ -10,6 +10,7 @@ const libroSchema = new Schema({
     tipo: { type: String, required: true },
     categoria: { type: String, required: true },
     enlace: { type: String, required: true },
+    portada: { type: String, required: true },
 }, {
     versionKey: false
 });
