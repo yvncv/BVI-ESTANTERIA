@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Libro } from "../types/Libro";
 import Card from "react-bootstrap/esm/Card";
 import { Button } from "react-bootstrap";
-import ModalEliminar from "./ModalEliminarLibro";
+import ModalEliminar from "../components/ModalEliminarLibro";
 
 const ListaLibros = () => {
   const [lista, setLista] = useState<Libro[]>([]);

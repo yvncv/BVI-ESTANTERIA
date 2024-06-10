@@ -15,5 +15,10 @@ async function main(){
     //mensaje cuando se reciba la señal
 }
 
+//ruta para nuestra api de libros
+app.use('/api/libros', require('./routes/libro'))
+
+app.use('/api/auth', require('./routes/auth'));
+
 main(); 
 //ejecutamos la funcion asincrona de arriba 

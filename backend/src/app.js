@@ -7,15 +7,18 @@ const app = express();
 app.set('port', process.env.PORT || 4000)
 
 //middlewares (logica que el codigo ejecuta antes de peticiones de las rutas)
-app.use(cors())
+app.use(cors(
+    {
+        origin: 'http://localhost:3000', // Cambia este a tu origen front-end
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true // Permitir el envío de cookies y encabezados HTTP en las solicitudes
+    }
+))
 app.use(express.json())
 
 //rutas (url)
 app.get('/', (req, res)=>{
     res.send('Bienvenido a mi API rest fullstack');
 })
-
-//ruta para nuestra api de libros
-app.use('/api/libros', require('./routes/libro'))
 
 module.exports = app;
