@@ -1,10 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 const BarraNavegacion = ({ loggedInUser }) => {
   // Obtenemos el contexto de autenticación
   const { logout } = useContext(AuthContext);
+  const [usuario, setUsuario] = useState(null); // Estado local para el usuario
+
+  useEffect(() => {
+    const obtenerUsuario = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decoded = jwtDecode(token);
+          setUsuario(decoded.usuario);
+        }
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+      }
+    };
+
+    obtenerUsuario();
+  }, []);
+
+  useEffect(() => {
+    if (usuario) {
+      console.log(`Bienvenido, ${usuario.nombre}`);
+    }
+  }, [usuario]); // Ejecutar este efecto cuando `usuario` cambie
 
   const handleLogout = () => {
     // Elimina el token de autenticación del almacenamiento local
@@ -23,7 +47,7 @@ const BarraNavegacion = ({ loggedInUser }) => {
             {loggedInUser ? (
               <>
                 <Nav.Link href="/ListaLibros">Lista de Libros</Nav.Link>
-                <Nav.Link href="/AgregarLibro">Agregar Libro</Nav.Link>
+                {usuario && usuario.role === 'admin' && (<Nav.Link href="/AgregarLibro">Agregar Libro</Nav.Link>)}
                 <Nav.Link onClick={handleLogout}>Cerrar Sesión</Nav.Link>
               </>
             ) : (

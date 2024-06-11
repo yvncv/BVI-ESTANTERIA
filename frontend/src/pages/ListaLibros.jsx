@@ -7,10 +7,10 @@ import ModalEliminar from "../components/ModalEliminarLibro";
 import { jwtDecode } from "jwt-decode";
 
 const ListaLibros = () => {
-  const [usuario, setUsuario] = useState(null); // Estado local para el usuario
   const [lista, setLista] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idEliminarLibro, setIdEliminarLibro] = useState(null);
+  const [usuario, setUsuario] = useState(null); // Estado local para el usuario
 
   useEffect(() => {
     const obtenerUsuario = async () => {
@@ -18,7 +18,7 @@ const ListaLibros = () => {
         const token = localStorage.getItem('token');
         if (token) {
           const decoded = jwtDecode(token);
-          setUsuario(decoded.user);
+          setUsuario(decoded.usuario);
         }
       } catch (error) {
         console.error('Error al decodificar el token:', error);
@@ -101,12 +101,16 @@ const ListaLibros = () => {
                 <Card.Text>Clase: {libro.categoria}</Card.Text>
                 <Card.Link className="mb-3 btn btn-warning" href={libro.enlace}>Lea el libro dando click aquí.</Card.Link>
                 <Card.Footer className="d-flex justify-content-around">
-                  <Button className="btn btn-danger" onClick={() => handleMostrarModal(libro._id)}>
-                    Eliminar libro
-                  </Button>
-                  <Link className="btn btn-success" to={`/edit/${libro._id}`}>
-                    Editar
-                  </Link>
+                {usuario && usuario.role === 'admin' && ( // Verifica si el usuario es un administrador
+                  <>
+                    <Button className="btn btn-danger" onClick={() => handleMostrarModal(libro._id)}>
+                      Eliminar libro
+                    </Button>
+                    <Link className="btn btn-success" to={`/edit/${libro._id}`}>
+                      Editar
+                    </Link>
+                  </>
+                )}
                 </Card.Footer>
               </Card.Body>
             </Card>

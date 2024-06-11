@@ -25,14 +25,14 @@ const Login = ({ setLoggedInUser }) => {
     setLoading(true); // Activar el estado de carga
   
     try {
-      const res = await axios.post('http://localhost:4000/api/auth/login', { codigo, password });
+      const res = await axios.post('http://localhost:4000/api/usuarios/login', { codigo, password });
       localStorage.setItem('token', res.data.token);
       setLoggedInUser(codigo);
       login();
       
       // Hacer una solicitud GET para obtener los datos del usuario
       const token = res.data.token;
-      const userDataRes = await axios.get(`http://localhost:4000/api/auth/login/${token}`);
+      const userDataRes = await axios.get(`http://localhost:4000/api/usuarios/login/${token}`);
       console.log('Usuario logueado:', userDataRes.data);
       navigate('/ListaLibros'); // Redirige al usuario a la lista de libros después del inicio de sesión exitoso
   

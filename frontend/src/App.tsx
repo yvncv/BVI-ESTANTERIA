@@ -10,12 +10,12 @@ import { DecodedToken } from './types/DecodedToken';
 import { useState } from 'react';
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState<DecodedToken['user'] | null>(() => {
+  const [loggedInUser, setLoggedInUser] = useState<DecodedToken['usuario'] | null>(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decoded: DecodedToken = jwtDecode(token);
-        return decoded.user;
+        return decoded.usuario;
       } catch (error) {
         console.error('Error al decodificar el token:', error);
         return null;

@@ -13,6 +13,11 @@ libroCtrl.getLibro = async (req, res) => {
 };
 
 libroCtrl.createLibro = async (req, res) => {
+
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(401).json({ message: 'No estás autorizado para realizar esta acción' });
+    }
+
     const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada } = req.body;
     const newLibro = new Libro({
         carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada
@@ -47,6 +52,11 @@ libroCtrl.getLib = async (req, res) => {
 };
 
 libroCtrl.deleteLibro = async (req, res) => {
+    
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(401).json({ message: 'No estás autorizado para realizar esta acción' });
+    }
+
     try {
         const id = (req.params.id); 
         await Libro.findByIdAndDelete(id);
@@ -57,6 +67,11 @@ libroCtrl.deleteLibro = async (req, res) => {
 };
 
 libroCtrl.updateLibro = async (req, res) => {
+    
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(401).json({ message: 'No estás autorizado para realizar esta acción' });
+    }
+    
     const { carrera, ciclo, curso, autor, titulo, lugar, tipo, categoria, enlace, portada } = req.body;
     try {
         const id = (req.params.id); 

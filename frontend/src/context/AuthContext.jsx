@@ -17,14 +17,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para iniciar sesión
-  const login = (user) => {
-    localStorage.setItem('loggedInUser', user);
-    setLoggedInUser(user);
+  const login = (usuario) => {
+    localStorage.setItem('loggedInUser', usuario);
+    setLoggedInUser(usuario);
   };
 
   // Función para cerrar sesión
-  const logout = (user) => {
-    localStorage.removeItem('loggedInUser', user);
+  const logout = (usuario) => {
+    localStorage.removeItem('loggedInUser', usuario);
     setLoggedInUser(null);
   };
 

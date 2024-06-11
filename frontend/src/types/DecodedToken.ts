@@ -1,6 +1,6 @@
-import { User } from "./User";
+import { Usuario } from "./Usuario";
 
 export interface DecodedToken {
-    user: User;
+    usuario: Usuario;
     // Puedes agregar más propiedades si tu token las tiene
 }

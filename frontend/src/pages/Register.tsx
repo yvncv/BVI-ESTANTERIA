@@ -25,7 +25,7 @@ const Register = () => {
     event.preventDefault();
 
     try {
-        await axios.post('http://localhost:4000/api/auth/register', formData); // Envía formData directamente
+        await axios.post('http://localhost:4000/api/usuarios', formData); // Envía formData directamente
         setError('Registrado exitosamente'); // Si no hay error, muestra el mensaje de éxito
     } catch (error) {
         setError('Error al registrar, intente nuevamente'); // Si hay error, muestra un mensaje de error

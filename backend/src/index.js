@@ -18,7 +18,7 @@ async function main(){
 //ruta para nuestra api de libros
 app.use('/api/libros', require('./routes/libro'))
 
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/usuarios', require('./routes/usuarios'));
 
 main(); 
 //ejecutamos la funcion asincrona de arriba 
