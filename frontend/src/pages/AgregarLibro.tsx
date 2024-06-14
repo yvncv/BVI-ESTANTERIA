@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 import { Container } from 'react-bootstrap';
 
 const CrearLibro: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); // Check this line for correct TypeScript syntax
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
 

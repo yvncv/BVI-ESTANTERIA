@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Button } from "react-bootstrap";
 import ModalEliminar from "../components/ModalEliminarLibro";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
+import Libro from "../components/Libro";
+import Busqueda from "../components/Busqueda";
+import Paginacion from "../components/Paginacion";
+import '../styles/ListaLibros.css'; // Importar el archivo CSS
 
 const ListaLibros = () => {
   const [lista, setLista] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idEliminarLibro, setIdEliminarLibro] = useState(null);
-  const [usuario, setUsuario] = useState(null); // Estado local para el usuario
+  const [usuario, setUsuario] = useState(null);
+  const [busqueda, setBusqueda] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [librosPorPagina] = useState(6); // Número de libros por página
 
   useEffect(() => {
     const obtenerUsuario = async () => {
@@ -31,9 +35,9 @@ const ListaLibros = () => {
   useEffect(() => {
     if (usuario) {
       console.log(`Bienvenido, ${usuario.nombre}`);
-      obtenerLibros(); // Llamar a la función para obtener los libros una vez que se haya cargado el usuario
+      obtenerLibros();
     }
-  }, [usuario]); // Ejecutar este efecto cuando `usuario` cambie
+  }, [usuario]);
 
   const obtenerLibros = async () => {
     try {
@@ -59,7 +63,6 @@ const ListaLibros = () => {
     if (idEliminarLibro) {
       try {
         await axios.delete(`http://localhost:4000/api/libros/${idEliminarLibro}`);
-        // Actualizar la lista de libros en el estado
         setLista(prevLista => prevLista.filter(libro => libro._id !== idEliminarLibro));
       } catch (error) {
         console.error("Error al eliminar el libro:", error);
@@ -71,50 +74,54 @@ const ListaLibros = () => {
 
   const librosRegistrados = lista.filter(libro => libro.enlace != null);
 
+  const librosFiltrados = librosRegistrados.filter(libro => {
+    const titulo = libro.titulo ? libro.titulo.toLowerCase() : "";
+    const autor = libro.autor ? libro.autor.toLowerCase() : "";
+    const lugar = libro.lugar ? libro.lugar.toLowerCase() : "";
+    const curso = libro.curso ? libro.curso.toLowerCase() : "";
+    const tipo = libro.tipo ? libro.tipo.toLowerCase() : "";
+    const categoria = libro.categoria ? libro.categoria.toLowerCase() : "";
+    const carrera = libro.carrera ? libro.carrera.toLowerCase() : "";
+
+    const busquedaLower = busqueda.toLowerCase();
+
+    return (
+      titulo.includes(busquedaLower) ||
+      autor.includes(busquedaLower) ||
+      lugar.includes(busquedaLower) ||
+      tipo.includes(busquedaLower) ||
+      categoria.includes(busquedaLower) ||
+      carrera.includes(busquedaLower) ||
+      curso.includes(busquedaLower) 
+    );
+  });
+
+  // Obtener libros actuales
+  const indexOfLastLibro = currentPage * librosPorPagina;
+  const indexOfFirstLibro = indexOfLastLibro - librosPorPagina;
+  const librosActuales = librosFiltrados.slice(indexOfFirstLibro, indexOfLastLibro);
+
+  // Cambiar página
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
   return (
     <>
       <div>
-        {/* Mensaje de bienvenida */}
         {usuario ? (
           <p>Hola {usuario.nombre}, aquí tienes la lista de libros:</p>
         ) : (
           <p>Bienvenido, aquí tienes la lista de libros:</p>
         )}
       </div>
+      <Busqueda busqueda={busqueda} setBusqueda={setBusqueda} />
       <div className="row">
-        {librosRegistrados.map((libro) => (
-          <div className="col-md p-3 mx-auto" key={libro._id}>
-            <Card
-              style={{ width: '20rem' }}
-              bg='light'
-              key='light'
-              text='dark'
-              border="success">
-              <Card.Header className="bg-dark text-light">
-                INGENIERÍA {libro.carrera}, CICLO: {libro.ciclo}, CURSO: {libro.curso}
-              </Card.Header>
-              <Card.Img variant="top" src={libro.portada ? libro.portada : "https://www.urp.edu.pe/img/thumbnails/wm/451/hm/162/we/451/he/162/x/0/y/0/s/0/q/90/zc/3/f/0/rgb/000000/src/37375/n/logo-urp.png"} />
-              <Card.Body className="d-flex flex-column justify-content-around">
-                <Card.Title>{libro.titulo}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Autor: {libro.autor}</Card.Subtitle>
-                <Card.Text>Editorial: {libro.lugar}</Card.Text>
-                <Card.Text>Clase: {libro.categoria}</Card.Text>
-                <Card.Link className="mb-3 btn btn-warning" href={libro.enlace}>Lea el libro dando click aquí.</Card.Link>
-                <Card.Footer className="d-flex justify-content-around">
-                {usuario && usuario.role === 'admin' && ( // Verifica si el usuario es un administrador
-                  <>
-                    <Button className="btn btn-danger" onClick={() => handleMostrarModal(libro._id)}>
-                      Eliminar libro
-                    </Button>
-                    <Link className="btn btn-success" to={`/edit/${libro._id}`}>
-                      Editar
-                    </Link>
-                  </>
-                )}
-                </Card.Footer>
-              </Card.Body>
-            </Card>
-          </div>
+        {librosActuales.map((libro) => (
+          <Libro
+            key={libro._id}
+            libro={libro}
+            usuario={usuario}
+            handleMostrarModal={handleMostrarModal}
+          />
         ))}
         <ModalEliminar
           show={mostrarModal}
@@ -122,6 +129,11 @@ const ListaLibros = () => {
           handleConfirm={eliminarLibro}
         />
       </div>
+      <Paginacion
+        currentPage={currentPage}
+        totalPages={Math.ceil(librosFiltrados.length / librosPorPagina)}
+        onPageChange={paginate}
+      />
     </>
   );
 };

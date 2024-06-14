@@ -17,11 +17,11 @@ const Register = () => {
 
   const { nombre, carrera, ciclo, codigo, email, password } = formData;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
