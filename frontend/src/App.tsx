@@ -31,7 +31,7 @@ function App() {
           <BarraNavegacion loggedInUser={loggedInUser} />
           <div className='container'>
             <Routes>
-              <Route path="/ListaLibros" element={loggedInUser ? <ListaLibros /> : <Navigate to="/login" />} />
+              <Route path="/" element={loggedInUser ? <ListaLibros /> : <Navigate to="/login" />} />
               <Route path="/AgregarLibro" element={loggedInUser ? <AgregarLibro /> : <Navigate to="/login" />} />
               <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} />} />
               <Route path="/register" element={<Register />} />

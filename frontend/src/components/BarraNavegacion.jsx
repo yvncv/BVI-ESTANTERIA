@@ -46,7 +46,7 @@ const BarraNavegacion = ({ loggedInUser }) => {
           <Nav className="justify-content-end flex-grow-1">
             {loggedInUser ? (
               <>
-                <Nav.Link href="/ListaLibros">Lista de Libros</Nav.Link>
+                <Nav.Link href="/">Lista de Libros</Nav.Link>
                 {usuario && usuario.role === 'admin' && (<Nav.Link href="/AgregarLibro">Agregar Libro</Nav.Link>)}
                 <Nav.Link onClick={handleLogout}>Cerrar Sesión</Nav.Link>
               </>

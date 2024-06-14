@@ -34,7 +34,7 @@ const Login = ({ setLoggedInUser }) => {
       const token = res.data.token;
       const userDataRes = await axios.get(`http://localhost:4000/api/usuarios/login/${token}`);
       console.log('Usuario logueado:', userDataRes.data);
-      navigate('/ListaLibros'); // Redirige al usuario a la lista de libros después del inicio de sesión exitoso
+      navigate('/'); // Redirige al usuario a la lista de libros después del inicio de sesión exitoso
   
     } catch (error) {
       if (axios.isAxiosError(error)) {

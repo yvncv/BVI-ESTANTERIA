@@ -82,6 +82,7 @@ const ListaLibros = () => {
     const tipo = libro.tipo ? libro.tipo.toLowerCase() : "";
     const categoria = libro.categoria ? libro.categoria.toLowerCase() : "";
     const carrera = libro.carrera ? libro.carrera.toLowerCase() : "";
+    const ciclo = libro.ciclo ? libro.ciclo.toLowerCase() : "";
 
     const busquedaLower = busqueda.toLowerCase();
 
@@ -92,6 +93,7 @@ const ListaLibros = () => {
       tipo.includes(busquedaLower) ||
       categoria.includes(busquedaLower) ||
       carrera.includes(busquedaLower) ||
+      ciclo.includes(busquedaLower) ||
       curso.includes(busquedaLower) 
     );
   });
@@ -105,7 +107,7 @@ const ListaLibros = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <>
+    <div>
       <div>
         {usuario ? (
           <p>Hola {usuario.nombre}, aquí tienes la lista de libros:</p>
@@ -134,7 +136,7 @@ const ListaLibros = () => {
         totalPages={Math.ceil(librosFiltrados.length / librosPorPagina)}
         onPageChange={paginate}
       />
-    </>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose')
 
 const libroSchema = new Schema({
     carrera: { type: String, required: true },
-    ciclo: { type: Number, required: true },
+    ciclo: { type: String, required: true },
     curso: { type: String, required: true },
     autor: { type: String, required: true },
     titulo: { type: String, required: true },
