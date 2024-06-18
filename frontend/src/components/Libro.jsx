@@ -2,6 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 
 const Libro = ({ libro, usuario, handleMostrarModal }) => {
   const colorMapping = {
@@ -21,8 +22,18 @@ const Libro = ({ libro, usuario, handleMostrarModal }) => {
         bg={cardColor}
         text={cardColor === 'light' ? 'dark' : 'white'}
         border='dark'>
-        <Card.Header>
+        <Card.Header style={{display: 'flex'}}>
           INGENIERÍA {libro.carrera}, CICLO: {libro.ciclo}, CURSO: {libro.curso}
+
+          <Dropdown>
+            <Dropdown.Toggle variant="dark" id="dropdown-basic"></Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1">Agregar a favoritos</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Leer más tarde</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Conseguir libro</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          
         </Card.Header>
         <Card.Img variant="top" style={{ height: '200px', objectFit: 'contain', padding: '10px' }} src={libro.portada ? libro.portada : "https://www.urp.edu.pe/img/thumbnails/wm/451/hm/162/we/451/he/162/x/0/y/0/s/0/q/90/zc/3/f/0/rgb/000000/src/37375/n/logo-urp.png"} />
         <Card.Body className="d-flex flex-column justify-content-around">
