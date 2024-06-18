@@ -19,7 +19,7 @@ const Paginacion = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <Pagination>
+    <Pagination style={{justifyContent: 'center', marginBottom: '20px', marginTop: '20px'}}>
       <Pagination.First onClick={() => onPageChange(1)} disabled={currentPage === 1} />
       <Pagination.Prev onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} />
       {startPage > 1 && (

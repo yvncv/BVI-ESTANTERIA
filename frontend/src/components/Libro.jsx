@@ -17,10 +17,10 @@ const Libro = ({ libro, usuario, handleMostrarModal }) => {
 
   return (
     <div className="col-md p-3 mx-auto" key={libro._id}>
-      <Card
+      <Card className="col-md p-3 mx-auto"
         style={{ width: '20rem' }}
         bg={cardColor}
-        text={cardColor === 'light' ? 'dark' : 'white'}
+        text={cardColor === 'light' | cardColor === 'warning' ? 'dark' : 'white'}
         border='dark'>
         <Card.Header style={{display: 'flex'}}>
           INGENIERÍA {libro.carrera}, CICLO: {libro.ciclo}, CURSO: {libro.curso}

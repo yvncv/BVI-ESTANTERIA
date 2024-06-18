@@ -111,7 +111,7 @@ const ListaLibros = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <div className="lista-libros-container">
+    <div className="lista-libros-container" style={{alignContent: 'center', alignItems: 'center' }}>
       <h2>Lista de Libros</h2>
       <Busqueda busqueda={busqueda} setBusqueda={setBusqueda} />
       <FiltroCarrera libros={lista} filtro={filtroCarrera} setFiltro={setFiltroCarrera} />
