@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import ModalEliminar from "../components/ModalEliminarLibro";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Libro from "../components/Libro";
 import Busqueda from "../components/Busqueda";
 import Paginacion from "../components/Paginacion";
-import '../styles/ListaLibros.css'; // Importar el archivo CSS
+import FiltroCarrera from "../components/FiltroCarrera";
+import FiltroCiclo from "../components/FiltroCiclo";
+import ModalEliminar from "../components/ModalEliminarLibro";
+import '../styles/ListaLibros.css'; // Asegúrate de tener el archivo CSS correctamente importado
 
 const ListaLibros = () => {
   const [lista, setLista] = useState([]);
@@ -13,8 +15,10 @@ const ListaLibros = () => {
   const [idEliminarLibro, setIdEliminarLibro] = useState(null);
   const [usuario, setUsuario] = useState(null);
   const [busqueda, setBusqueda] = useState("");
+  const [filtroCarrera, setFiltroCarrera] = useState("Todas");
+  const [filtroCiclo, setFiltroCiclo] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const [librosPorPagina] = useState(6); // Número de libros por página
+  const librosPorPagina = 6; // Número de libros por página
 
   useEffect(() => {
     const obtenerUsuario = async () => {
@@ -72,9 +76,8 @@ const ListaLibros = () => {
     }
   };
 
-  const librosRegistrados = lista.filter(libro => libro.enlace != null);
-
-  const librosFiltrados = librosRegistrados.filter(libro => {
+  // Filtrado de libros por búsqueda, carrera y ciclo
+  const librosFiltrados = lista.filter(libro => {
     const titulo = libro.titulo ? libro.titulo.toLowerCase() : "";
     const autor = libro.autor ? libro.autor.toLowerCase() : "";
     const lugar = libro.lugar ? libro.lugar.toLowerCase() : "";
@@ -87,18 +90,19 @@ const ListaLibros = () => {
     const busquedaLower = busqueda.toLowerCase();
 
     return (
-      titulo.includes(busquedaLower) ||
-      autor.includes(busquedaLower) ||
-      lugar.includes(busquedaLower) ||
-      tipo.includes(busquedaLower) ||
-      categoria.includes(busquedaLower) ||
-      carrera.includes(busquedaLower) ||
-      ciclo.includes(busquedaLower) ||
-      curso.includes(busquedaLower) 
+      (filtroCarrera === "Todas" || carrera.includes(filtroCarrera.toLowerCase())) &&
+      (filtroCiclo === "Todos" || ciclo.includes(filtroCiclo.toLowerCase())) &&
+      (titulo.includes(busquedaLower) ||
+       autor.includes(busquedaLower) ||
+       lugar.includes(busquedaLower) ||
+       tipo.includes(busquedaLower) ||
+       categoria.includes(busquedaLower) ||
+       curso.includes(busquedaLower)
+      )
     );
   });
 
-  // Obtener libros actuales
+  // Obtener libros actuales según la paginación
   const indexOfLastLibro = currentPage * librosPorPagina;
   const indexOfFirstLibro = indexOfLastLibro - librosPorPagina;
   const librosActuales = librosFiltrados.slice(indexOfFirstLibro, indexOfLastLibro);
@@ -107,17 +111,14 @@ const ListaLibros = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <div>
-      <div>
-        {usuario ? (
-          <p>Hola {usuario.nombre}, aquí tienes la lista de libros:</p>
-        ) : (
-          <p>Bienvenido, aquí tienes la lista de libros:</p>
-        )}
-      </div>
+    <div className="lista-libros-container">
+      <h2>Lista de Libros</h2>
       <Busqueda busqueda={busqueda} setBusqueda={setBusqueda} />
+      <FiltroCarrera libros={lista} filtro={filtroCarrera} setFiltro={setFiltroCarrera} />
+      <FiltroCiclo libros={lista} filtro={filtroCiclo} setFiltro={setFiltroCiclo} />
+
       <div className="row">
-        {librosActuales.map((libro) => (
+        {librosActuales.map(libro => (
           <Libro
             key={libro._id}
             libro={libro}
@@ -125,16 +126,18 @@ const ListaLibros = () => {
             handleMostrarModal={handleMostrarModal}
           />
         ))}
-        <ModalEliminar
-          show={mostrarModal}
-          handleClose={handleCerrarModal}
-          handleConfirm={eliminarLibro}
-        />
       </div>
+
       <Paginacion
         currentPage={currentPage}
         totalPages={Math.ceil(librosFiltrados.length / librosPorPagina)}
         onPageChange={paginate}
+      />
+
+      <ModalEliminar
+        show={mostrarModal}
+        handleClose={handleCerrarModal}
+        handleConfirm={eliminarLibro}
       />
     </div>
   );
