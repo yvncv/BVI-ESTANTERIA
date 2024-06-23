@@ -18,7 +18,7 @@ const ListaLibros = () => {
   const [filtroCarrera, setFiltroCarrera] = useState("Todas");
   const [filtroCiclo, setFiltroCiclo] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const librosPorPagina = 6; // Número de libros por página
+  const librosPorPagina = 9; // Número de libros por página
 
   useEffect(() => {
     const obtenerUsuario = async () => {
