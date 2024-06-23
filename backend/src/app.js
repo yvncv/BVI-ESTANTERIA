@@ -9,7 +9,6 @@ app.set('port', process.env.PORT || 4000)
 //middlewares (logica que el codigo ejecuta antes de peticiones de las rutas)
 app.use(cors(
     {
-        origin: 'http://localhost:3000', // Cambia este a tu origen front-end
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true // Permitir el envío de cookies y encabezados HTTP en las solicitudes
     }

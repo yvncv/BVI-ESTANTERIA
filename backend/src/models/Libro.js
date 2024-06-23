@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose')
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
 const libroSchema = new Schema({
     carrera: { type: String, required: true },
@@ -11,8 +12,10 @@ const libroSchema = new Schema({
     categoria: { type: String, required: true },
     enlace: { type: String, required: true },
     portada: { type: String, required: true },
+    contador: { type: Number, default: 0 }, // Inicializamos el contador en 0
+    usuarios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Relación con usuarios
 }, {
     versionKey: false
 });
 
-module.exports = model('Libro', libroSchema)
+module.exports = model('Libro', libroSchema);

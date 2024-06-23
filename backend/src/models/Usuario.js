@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose')
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
 const usuarioSchema = new Schema({
     nombre: { type: String, required: true },
@@ -9,11 +10,12 @@ const usuarioSchema = new Schema({
     password: { type: String, required: true },
     role: {
         type: String,
-        enum: ['admin', 'alumno'], // Define los roles posibles
-        default: 'alumno' // Asigna el rol por defecto a 'user'
-    }
+        enum: ['admin', 'alumno'],
+        default: 'alumno'
+    },
+    libros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Libro' }], // Relación con libros
 }, {
     versionKey: false
 });
 
-module.exports = model('Usuario', usuarioSchema)
+module.exports = model('Usuario', usuarioSchema);
