@@ -32,7 +32,6 @@ const ListaLibros = () => {
         console.error('Error al decodificar el token:', error);
       }
     };
-
     obtenerUsuario();
   }, []);
 
@@ -112,10 +111,11 @@ const ListaLibros = () => {
 
   return (
     <div className="lista-libros-container" style={{alignContent: 'center', alignItems: 'center' }}>
-      <h2>Lista de Libros</h2>
+      {usuario ? <h2 style={{marginBottom: '30px'}}>Saludos, {usuario.nombre}</h2> : <h2 style={{marginBottom: '30px'}}>Saludos.</h2>}
       <Busqueda busqueda={busqueda} setBusqueda={setBusqueda} />
       <FiltroCarrera libros={lista} filtro={filtroCarrera} setFiltro={setFiltroCarrera} />
       <FiltroCiclo libros={lista} filtro={filtroCiclo} setFiltro={setFiltroCiclo} />
+      <h2 style={{marginTop: '30px'}}>Lista de Libros</h2>
 
       <div className="row">
         {librosActuales.map(libro => (

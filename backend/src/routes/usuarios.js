@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
+const mongoose = require('mongoose');
 
 // Ruta de registro
 router.post('/', async (req, res) => {
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => {
                 email: usuario.email,
                 carrera: usuario.carrera,
                 ciclo: usuario.ciclo,
-                role: usuario.role,
+                role: usuario.role
                 // Agrega aquí todas las propiedades relevantes del usuario
             }
         };
@@ -55,6 +56,75 @@ router.get('/', async (req, res) => {
         res.json(usuarios);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los usuarios', error });
+    }
+});
+
+// Añadir libro a favoritos
+router.post('/:userId/favoritos', async (req, res) => {
+    const { userId } = req.params;
+    const { libroId } = req.body;
+    
+    try {
+        const usuario = await Usuario.findByIdAndUpdate(
+            userId,
+            { $addToSet: { 'libros.favoritos': libroId } }, // Utiliza $addToSet para evitar duplicados
+            { new: true }
+        );
+
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al añadir a favoritos:', error);
+        res.status(500).json({ message: 'Error interno al añadir a favoritos' });
+    }
+});
+
+// Añadir libro a leer más tarde
+router.post('/:userId/masTarde', async (req, res) => {
+    const { userId } = req.params;
+    const { libroId } = req.body;
+
+    try {
+        const usuario = await Usuario.findByIdAndUpdate(
+            userId,
+            { $addToSet: { 'libros.mas_tarde': libroId } }, // Utiliza $addToSet para evitar duplicados
+            { new: true }
+        );
+
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al añadir a leer más tarde:', error);
+        res.status(500).json({ message: 'Error interno al añadir a leer más tarde' });
+    }
+});
+
+module.exports = router;
+
+router.get('/:userId/', async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'ID inválido' });
+        }
+
+        const usuario = await Usuario.findById(userId);
+
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al obtener el usuario:', error); 
+        res.status(500).json({ message: 'Error al obtener el usuario', error: error.message });
     }
 });
 
@@ -85,7 +155,7 @@ router.post('/login', async (req, res) => {
                 carrera: usuario.carrera,
                 ciclo: usuario.ciclo,
                 role: usuario.role,
-                // Agrega aquí todas las propiedades relevantes del usuario
+                libros: usuario.libros,
             }
         };
 

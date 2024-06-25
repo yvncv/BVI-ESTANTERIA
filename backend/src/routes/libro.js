@@ -12,7 +12,4 @@ router.route('/:id')
   .delete(libroCtrl.deleteLibro)
   .put(libroCtrl.updateLibro);
 
-router.route('/:id/favoritos')
-  .put(verifyUser, libroCtrl.addToFavorites);
-
 module.exports = router;

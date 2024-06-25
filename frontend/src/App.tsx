@@ -8,6 +8,7 @@ import { AuthProvider } from './context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from './types/DecodedToken';
 import { useState } from 'react';
+import MisLibros from './pages/MisLibros';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<DecodedToken['usuario'] | null>(() => {
@@ -36,6 +37,7 @@ function App() {
               <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} />} />
               <Route path="/register" element={<Register />} />
               <Route path="/edit/:id" element={<AgregarLibro />} />
+              <Route path="/mis-libros" element={<MisLibros />} />
             </Routes>
           </div>
         </>

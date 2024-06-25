@@ -47,6 +47,7 @@ const BarraNavegacion = ({ loggedInUser }) => {
             {loggedInUser ? (
               <>
                 <Nav.Link href="/">Lista de Libros</Nav.Link>
+                <Nav.Link href="/mis-libros">Mis Libros</Nav.Link>
                 {usuario && usuario.role === 'admin' && (<Nav.Link href="/AgregarLibro">Agregar Libro</Nav.Link>)}
                 <Nav.Link onClick={handleLogout}>Cerrar Sesión</Nav.Link>
               </>

@@ -12,19 +12,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem('loggedInUser');
     if (storedUser) {
-      setLoggedInUser(storedUser);
+      setLoggedInUser(JSON.parse(storedUser));
     }
   }, []);
 
   // Función para iniciar sesión
   const login = (usuario) => {
-    localStorage.setItem('loggedInUser', usuario);
+    localStorage.setItem('loggedInUser', JSON.stringify(usuario));
     setLoggedInUser(usuario);
   };
 
   // Función para cerrar sesión
-  const logout = (usuario) => {
-    localStorage.removeItem('loggedInUser', usuario);
+  const logout = () => {
+    localStorage.removeItem('loggedInUser');
     setLoggedInUser(null);
   };
 

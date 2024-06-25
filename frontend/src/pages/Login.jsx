@@ -27,13 +27,12 @@ const Login = ({ setLoggedInUser }) => {
     try {
       const res = await axios.post('http://localhost:4000/api/usuarios/login', { codigo, password });
       localStorage.setItem('token', res.data.token);
-      setLoggedInUser(codigo);
-      login();
       
       // Hacer una solicitud GET para obtener los datos del usuario
       const token = res.data.token;
       const userDataRes = await axios.get(`http://localhost:4000/api/usuarios/login/${token}`);
-      console.log('Usuario logueado:', userDataRes.data);
+      setLoggedInUser(userDataRes.data);
+      login(userDataRes.data.usuario);
       navigate('/'); // Redirige al usuario a la lista de libros después del inicio de sesión exitoso
   
     } catch (error) {

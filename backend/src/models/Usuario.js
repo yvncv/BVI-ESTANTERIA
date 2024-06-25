@@ -13,7 +13,10 @@ const usuarioSchema = new Schema({
         enum: ['admin', 'alumno'],
         default: 'alumno'
     },
-    libros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Libro' }], // Relación con libros
+    libros: { 
+        mas_tarde: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Libro' }],
+        favoritos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Libro' }]
+    }, // Relación con libros
 }, {
     versionKey: false
 });
