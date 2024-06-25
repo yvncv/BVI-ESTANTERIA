@@ -1,7 +1,12 @@
 import React from "react";
 import { Form } from "react-bootstrap";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 const FiltroCarrera = ({ libros, filtro, setFiltro }) => {
+    const { loggedInUser } = useContext(AuthContext);
+    // console.log(loggedInUser);
+    const user = loggedInUser;
     // Obtener todas las carreras disponibles
     const carreras = [...new Set(libros.map(libro => libro.carrera))];
 
@@ -21,6 +26,7 @@ const FiltroCarrera = ({ libros, filtro, setFiltro }) => {
                     onChange={handleChange}
                 >
                     <option value="Todas">Todas las carreras</option>
+                    <option value={user?.carrera}>MI CARRERA  ({user?.carrera})</option>
                     {carreras.map((carrera, index) => (
                         <option key={index} value={carrera}>{carrera}</option>
                     ))}

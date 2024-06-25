@@ -110,12 +110,12 @@ const ListaLibros = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <div className="lista-libros-container" style={{alignContent: 'center', alignItems: 'center' }}>
-      {usuario ? <h2 style={{marginBottom: '30px'}}>Saludos, {usuario.nombre}</h2> : <h2 style={{marginBottom: '30px'}}>Saludos.</h2>}
+    <div className="lista-libros-container">
+      {usuario ? <h2 style={{ marginBottom: '30px' }}>Saludos, {usuario.nombre}</h2> : <h2 style={{ marginBottom: '30px' }}>Saludos.</h2>}
       <Busqueda busqueda={busqueda} setBusqueda={setBusqueda} />
       <FiltroCarrera libros={lista} filtro={filtroCarrera} setFiltro={setFiltroCarrera} />
       <FiltroCiclo libros={lista} filtro={filtroCiclo} setFiltro={setFiltroCiclo} />
-      <h2 style={{marginTop: '30px'}}>Lista de Libros</h2>
+      <h2 style={{ marginTop: '30px' }}>Lista de Libros</h2>
 
       <div className="row">
         {librosActuales.map(libro => (
