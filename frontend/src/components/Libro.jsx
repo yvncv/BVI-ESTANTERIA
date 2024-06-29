@@ -47,7 +47,8 @@ const Libro = ({ libro, usuario, handleMostrarModal }) => {
                 text={cardColor === 'light' || cardColor === 'warning' ? 'dark' : 'white'}
                 border='dark'>
                 <Card.Header style={{ display: 'flex' }}>
-                    INGENIERÍA {libro.carrera}, CICLO: {libro.ciclo}, CURSO: {libro.curso}
+                    {/* actualizar formato de libro (plan, profesores)*/}
+                    INGENIERÍA {libro.carrera} | PLAN: {libro.plan} | CICLO: {libro.ciclo} | CURSO: {libro.curso}
                     <Dropdown>
                         <Dropdown.Toggle variant="dark" id="dropdown-basic"></Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -63,6 +64,7 @@ const Libro = ({ libro, usuario, handleMostrarModal }) => {
                     <Card.Subtitle className="mb-2 text-muted">{libro.autor}</Card.Subtitle>
                     <Card.Subtitle>Publicado en: {libro.lugar}</Card.Subtitle>
                     <Card.Text>Clase: {libro.categoria}</Card.Text>
+                    {libro.sugeridoPorProfesor ? (<Card.Text>Sugerido por: {libro.sugeridoPorProfesor}</Card.Text>) : ("")}
                     <Card.Link className="mb-3 btn btn-dark border-light" href={libro.enlace}>Lea el libro dando click aquí.</Card.Link>
                     {usuario && usuario.role === 'admin' && (
                         <Card.Footer className="d-flex justify-content-around">

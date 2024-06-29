@@ -1,6 +1,7 @@
 export interface Libro {
     _id: string;
     carrera: string;
+    plan: string;
     ciclo: string;
     curso: string;
     autor: string;
@@ -10,4 +11,5 @@ export interface Libro {
     categoria: string;
     enlace: string;
     portada: string;
+    sugeridoPorProfesor: string;
 }                                                     

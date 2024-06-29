@@ -29,7 +29,7 @@ function App() {
     <AuthProvider>
       <Router>
         <>
-          <BarraNavegacion loggedInUser={loggedInUser} />
+          <BarraNavegacion />
           <div className='container'>
             <Routes>
               <Route path="/" element={loggedInUser ? <ListaLibros /> : <Navigate to="/login" />} />

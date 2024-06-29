@@ -16,6 +16,7 @@ const CrearLibro: React.FC = () => {
   const [libro, setLibro] = useState<Libro>({
     _id: '',
     carrera: '',
+    plan: '',
     ciclo: '',
     curso: '',
     autor: '',
@@ -25,6 +26,7 @@ const CrearLibro: React.FC = () => {
     categoria: '',
     enlace: '',
     portada: '',
+    sugeridoPorProfesor: '',
   });
 
   useEffect(() => {
@@ -40,6 +42,7 @@ const CrearLibro: React.FC = () => {
         setLibro({
           _id: valorId,
           carrera: res.data.carrera || '',
+          plan: res.data.plan || '',
           ciclo: res.data.ciclo || '',
           curso: res.data.curso || '',
           autor: res.data.autor || '',
@@ -49,6 +52,7 @@ const CrearLibro: React.FC = () => {
           categoria: res.data.categoria || '',
           enlace: res.data.enlace || '',
           portada: res.data.portada || '',
+          sugeridoPorProfesor: res.data.sugeridoPorProfesor || '',
         });
       } else {
         console.error('No se encontraron datos para el libro con id:', valorId);
@@ -93,6 +97,7 @@ const CrearLibro: React.FC = () => {
     <Container>
       <h2>{id ? 'Editar Libro' : 'Agregar Libro'}</h2>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        
         <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="formCarrera">
             <Form.Label>Carrera</Form.Label>
@@ -114,7 +119,23 @@ const CrearLibro: React.FC = () => {
               Por favor, seleccione una carrera.
             </Form.Control.Feedback>
           </Form.Group>
-
+          <Form.Group as={Col} md="6" controlId="formPlan">
+            <Form.Label>Plan</Form.Label>
+            <Form.Control
+              as="select"
+              name="plan"
+              onChange={capturarDatos}
+              value={libro.plan}
+              required
+            >
+              <option value="">Seleccionar Plan</option>
+              <option value="2015-II">2015-II</option>
+              <option value="2024-I">2024-I</option>
+            </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Por favor, seleccione un plan.
+            </Form.Control.Feedback>
+          </Form.Group>
           <Form.Group as={Col} md="6" controlId="formCiclo">
             <Form.Label>Semestre</Form.Label>
             <Form.Control
@@ -135,9 +156,6 @@ const CrearLibro: React.FC = () => {
               Por favor, seleccione un semestre.
             </Form.Control.Feedback>
           </Form.Group>
-        </Row>
-
-        <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="formCurso">
             <Form.Label>Curso</Form.Label>
             <Form.Control
@@ -152,7 +170,9 @@ const CrearLibro: React.FC = () => {
               Por favor, ingrese el nombre del curso.
             </Form.Control.Feedback>
           </Form.Group>
+        </Row>
 
+        <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="formTitulo">
             <Form.Label>Título</Form.Label>
             <Form.Control
@@ -167,9 +187,6 @@ const CrearLibro: React.FC = () => {
               Por favor, ingrese el título del libro.
             </Form.Control.Feedback>
           </Form.Group>
-        </Row>
-
-        <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="formAutor">
             <Form.Label>Autor y Año</Form.Label>
             <Form.Control
@@ -184,7 +201,9 @@ const CrearLibro: React.FC = () => {
               Por favor, ingrese el autor y año de publicación.
             </Form.Control.Feedback>
           </Form.Group>
+        </Row>
 
+        <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="formLugar">
             <Form.Label>Lugar</Form.Label>
             <Form.Control
@@ -197,6 +216,20 @@ const CrearLibro: React.FC = () => {
             />
             <Form.Control.Feedback type="invalid">
               Por favor, ingrese el lugar de publicación.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group as={Col} md="6" controlId="formCategoria">
+            <Form.Label>Categoría</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Libro, Monografía, Artículo..."
+              name="categoria"
+              onChange={capturarDatos}
+              value={libro.categoria}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor, ingrese la categoría del documento.
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
@@ -216,19 +249,17 @@ const CrearLibro: React.FC = () => {
               Por favor, ingrese el tipo de documento.
             </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group as={Col} md="6" controlId="formCategoria">
-            <Form.Label>Categoría</Form.Label>
+          <Form.Group as={Col} controlId="formProfesor">
+            <Form.Label>Sugerido por profesor(es):</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Libro, Monografía, Artículo..."
-              name="categoria"
+              placeholder="Profesor que sugiere el libro"
+              name="sugeridoPorProfesor"
               onChange={capturarDatos}
-              value={libro.categoria}
-              required
+              value={libro.sugeridoPorProfesor}
             />
             <Form.Control.Feedback type="invalid">
-              Por favor, ingrese la categoría del documento.
+              Ingrese profesor(es) que sugiere(n) el libro.
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
