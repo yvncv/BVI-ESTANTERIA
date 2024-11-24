@@ -54,7 +54,6 @@ const Libro = ({ libro, usuario, handleMostrarModal }) => {
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleAñadirFavorito(libro._id)}>Agregar a favoritos</Dropdown.Item>
                             <Dropdown.Item onClick={() => handleLeerMasTarde(libro._id)}>Leer más tarde</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Conseguir libro</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Card.Header>
